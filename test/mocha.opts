@@ -1,3 +1,4 @@
 --require @babel/register
+--timeout 0
 
 ./{,!(node_modules)/**}/*.spec.js
