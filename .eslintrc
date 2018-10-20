@@ -1,0 +1,10 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "extends": ["standard", "plugin:prettier/recommended"], 
+  "rules": {
+    "no-unused-expressions":"off",
+    "semi": ["error", "always"]
+  }
+}

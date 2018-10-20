@@ -1,0 +1,44 @@
+{
+  "name": "datarithms",
+  "version": "1.0.0",
+  "description": "A collection of data structures and algorithms written in various programming languages.",
+  "scripts": {
+    "lint": "eslint --fix",
+    "test": "mocha",
+    "test-watch": "mocha -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/beaunus/datarithms.git"
+  },
+  "author": "beau@beaunus.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/beaunus/datarithms/issues"
+  },
+  "homepage": "https://gitlab.com/beaunus/datarithms#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^5.7.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "lint-staged": "^7.3.0",
+    "mocha": "^5.2.0",
+    "prettier": "^1.14.3"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
