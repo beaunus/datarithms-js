@@ -17,7 +17,9 @@
     "url": "https://gitlab.com/beaunus/datarithms/issues"
   },
   "homepage": "https://gitlab.com/beaunus/datarithms#readme",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.11"
+  },
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
