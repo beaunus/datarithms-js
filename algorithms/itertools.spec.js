@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { combinations, permutations, range, xrange } from "./itertools";
 
-describe.only("itertools", () => {
+describe("itertools", () => {
   describe("combinations", () => {
     it("should return an array with a single empty array if the length is 0", () => {
       const MAX_ARRAY_SIZE = 5;
