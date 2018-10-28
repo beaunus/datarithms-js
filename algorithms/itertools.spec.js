@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import _ from "lodash";
 
 import { combinations, permutations, range, xrange } from "./itertools";
 

@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import _ from "lodash";
 
 import { bruteForce, quadratic } from "./three-sum";
 

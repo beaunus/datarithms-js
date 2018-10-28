@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A collection of data structures and algorithms written in various programming languages.",
   "scripts": {
-    "lint": "eslint --fix",
+    "lint": "eslint --fix **/*.js",
     "test": "mocha",
     "test-watch": "mocha -w"
   },
