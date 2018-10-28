@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import _ from "lodash";
 
-import { combinations, range, xrange } from "./itertools";
+import { combinations, permutations, range, xrange } from "./itertools";
 
 describe.only("itertools", () => {
   describe("combinations", () => {
@@ -47,6 +47,61 @@ describe.only("itertools", () => {
       }
 
       const expected = [[1, 2], [1, 3], [2, 3]];
+
+      expect(actual.sort()).to.deep.equal(expected.sort());
+    });
+  });
+
+  describe("permutations", () => {
+    it("should return an array with a single empty array if the length is 0", () => {
+      const MAX_ARRAY_SIZE = 5;
+      for (let i in xrange(MAX_ARRAY_SIZE + 1)) {
+        const array = range(i);
+        const allPermutations = permutations(array, 0);
+
+        const actual = [];
+        for (let permutation of allPermutations) {
+          actual.push(permutation);
+        }
+
+        expect(actual.sort()).to.deep.equal([[]].sort());
+      }
+    });
+
+    it("should return an array containing all single element arrays if the length is 1", () => {
+      const MAX_ARRAY_SIZE = 5;
+      for (let i in xrange(MAX_ARRAY_SIZE + 1)) {
+        const array = range(i);
+        const allPermutations = permutations(array, 1);
+
+        const actual = [];
+        for (let permutation of allPermutations) {
+          actual.push(permutation);
+        }
+
+        const expected = [];
+        for (let j of xrange(i)) {
+          expected.push([j]);
+        }
+
+        expect(actual.sort()).to.deep.equal(expected.sort());
+      }
+    });
+
+    it("should return the correct result if the input is small", () => {
+      const actual = [];
+      for (let permutation of permutations([1, 2, 3], 3)) {
+        actual.push(permutation);
+      }
+
+      const expected = [
+        [1, 2, 3],
+        [1, 3, 2],
+        [2, 1, 3],
+        [2, 3, 1],
+        [3, 1, 2],
+        [3, 2, 1]
+      ];
 
       expect(actual.sort()).to.deep.equal(expected.sort());
     });

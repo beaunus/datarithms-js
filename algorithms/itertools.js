@@ -17,6 +17,30 @@ function* combinations(array, length) {
 }
 
 /**
+ * Iterate over all permutations of the given length from the given array.
+ * @param {Array} array
+ * @param {Number} length
+ * @returns {Array}
+ */
+function* permutations(array, length) {
+  if (!length) {
+    yield [];
+  } else {
+    for (const index in array) {
+      const elementToInject = array[index];
+      const others = array.slice(index + 1);
+      for (const smallerPermutation of permutations(others, length - 1)) {
+        for (let i = 0; i <= smallerPermutation.length; ++i) {
+          const copy = Array.from(smallerPermutation);
+          copy.splice(i, 0, elementToInject);
+          yield copy;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Iterate over all numbers (incrementing by the given step),
  * between the given start (inclusive) and end (exclusive).
  * @param {Number} start
@@ -48,4 +72,4 @@ function range(start, end, step = 1) {
   return result;
 }
 
-export { combinations, range, xrange };
+export { combinations, permutations, range, xrange };
