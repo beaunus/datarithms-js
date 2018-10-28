@@ -27,6 +27,15 @@
         ],
         "newlines-between": "always"
       }
-    ]
+    ],
+    "sort-keys": [
+      "error",
+      "asc",
+      {
+        "caseSensitive": true,
+        "natural": false
+      }
+    ],
+    "sort-vars": "error"
   }
 }
