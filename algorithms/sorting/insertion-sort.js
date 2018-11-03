@@ -4,13 +4,11 @@
  */
 function sort(array) {
   for (let i = 1; i < array.length; ++i) {
-    let x = array[i];
-    let j = i - 1;
-    while (j >= 0 && array[j] > x) {
-      array[j + 1] = array[j];
-      --j;
+    for (let j = i; j > 0 && array[j] < array[j - 1]; --j) {
+      const temp = array[j - 1];
+      array[j - 1] = array[j];
+      array[j] = temp;
     }
-    array[j + 1] = x;
   }
   return array;
 }
