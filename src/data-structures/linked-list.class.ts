@@ -1,9 +1,10 @@
 class LinkedList {
+  public elements;
   constructor() {
     this.elements = [];
   }
 
-  add(element, index) {
+  public add(element, index) {
     if (index === undefined) {
       this.elements.push(element);
     } else {
@@ -11,11 +12,11 @@ class LinkedList {
     }
   }
 
-  get(index) {
+  public get(index) {
     return this.elements[index];
   }
 
-  size() {
+  public size() {
     return this.elements.length;
   }
 }

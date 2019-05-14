@@ -9,7 +9,7 @@ describe("UnionFind", () => {
     it("should return true if given the same component for both arguments", () => {
       const unionFind = new UnionFind(10);
       for (let component = 0; component < 10; ++component) {
-        expect(unionFind.connected(component, component)).to.be.true;
+        expect(unionFind.connected(component, component)).to.equal(true);
       }
     });
     describe("no unions", () => {
@@ -17,13 +17,12 @@ describe("UnionFind", () => {
         const unionFind = new UnionFind(SIZE);
         for (let componentA = 0; componentA < SIZE; ++componentA) {
           for (let componentB = componentA + 1; componentB < SIZE; ++componentB) {
-            expect(unionFind.connected(componentA, componentB)).to.be.false;
+            expect(unionFind.connected(componentA, componentB)).to.equal(false);
           }
         }
       });
     });
     describe("some unions", () => {
-      after(() => {});
       it("should return the correct answer", () => {
         const unionFind = new UnionFind(SIZE);
         for (let componentA = 0; componentA < SIZE; componentA += 2) {
@@ -46,7 +45,7 @@ describe("UnionFind", () => {
       it("should return false if the given components are not equal", () => {
         for (let componentA = 0; componentA < SIZE; ++componentA) {
           for (let componentB = componentA + 1; componentB < SIZE; ++componentB) {
-            expect(unionFind.connected(componentA, componentB)).to.be.true;
+            expect(unionFind.connected(componentA, componentB)).to.equal(true);
           }
         }
       });

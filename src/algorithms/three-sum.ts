@@ -26,7 +26,7 @@ function quadratic(array) {
   for (let i = 0; i < array.length; i++) {
     for (let j = i + 1; j < array.length; j++) {
       const k = indexOf(array, -(array[i] + array[j]));
-      if (k > j) ++count;
+      if (k > j) { ++count; }
     }
   }
   return count;

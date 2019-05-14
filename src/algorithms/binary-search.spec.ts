@@ -24,8 +24,8 @@ describe("binarySearch", () => {
       for (let i = 0; i < MAX_NUM_ELEMENTS; ++i) {
         const elementToPush = 2 * i;
         array.push(elementToPush);
-        for (let j = 0; j < array.length; ++j) {
-          expect(indexOf(array, array[j] - 1)).to.equal(-1);
+        for (const element of array) {
+          expect(indexOf(array, element - 1)).to.equal(-1);
         }
       }
     });

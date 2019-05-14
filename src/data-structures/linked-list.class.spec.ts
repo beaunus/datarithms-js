@@ -1,5 +1,5 @@
-import _ from "lodash";
 import { expect } from "chai";
+import * as _ from "lodash";
 
 import LinkedList from "./linked-list.class";
 

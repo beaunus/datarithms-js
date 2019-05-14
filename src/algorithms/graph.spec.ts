@@ -2,12 +2,12 @@
 
 import { expect } from "chai";
 
-import { Graph, generateCompleteGraph } from "./graph";
+import { generateCompleteGraph, Graph } from "./graph";
 import { range } from "./itertools";
 
 const MAX_NUM_VERTICES = 10;
 
-describe.only("graph", () => {
+describe("graph", () => {
   describe("addEdge", () => {
     it("should throw an error if either of the vertices don't exist in the graph", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {

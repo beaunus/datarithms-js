@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import _ from "lodash";
+import * as _ from "lodash";
 
 import { shuffle } from "./knuth-shuffle";
 
@@ -11,7 +11,7 @@ describe("shuffle", () => {
     const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const arrayToShuffle = _.cloneDeep(array);
     const shuffledArray = shuffle(arrayToShuffle);
-    for (let i of array) {
+    for (const i of array) {
       expect(shuffledArray).to.include(i);
     }
   });
@@ -35,7 +35,7 @@ describe("shuffle", () => {
     for (let i = 0; i < NUM_TRIALS; ++i) {
       const arrayToShuffle = initializeArray(NUM_ELEMENTS);
       shuffle(arrayToShuffle);
-      for (let j in arrayToShuffle) {
+      for (const j of arrayToShuffle) {
         const element = arrayToShuffle[j];
         ++elementCounts[element][j];
       }
@@ -63,7 +63,7 @@ function initializeArray(numElements) {
 
 function getMaximumVariance(array, expectedValue) {
   let result = 0;
-  for (let i of array) {
+  for (const i of array) {
     const variance = Math.abs(expectedValue - i);
     result = Math.max(variance, result);
   }

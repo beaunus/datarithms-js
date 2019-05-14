@@ -6,7 +6,7 @@ function indexOf(array, element) {
   let lo = 0;
   let hi = array.length - 1;
   while (lo <= hi) {
-    let mid = Math.floor(lo + (hi - lo) / 2);
+    const mid = Math.floor(lo + (hi - lo) / 2);
     if (element < array[mid]) {
       hi = mid - 1;
     } else if (element > array[mid]) {

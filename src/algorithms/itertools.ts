@@ -8,8 +8,8 @@ function* combinations(array, length) {
   if (!length) {
     yield [];
   } else {
-    for (let i of xrange(length - 1, array.length)) {
-      for (let cl of combinations(array.slice(0, i), length - 1)) {
+    for (const i of xrange(length - 1, array.length)) {
+      for (const cl of combinations(array.slice(0, i), length - 1)) {
         yield cl.concat(array[i]);
       }
     }
@@ -26,13 +26,13 @@ function* permutations(array, length) {
   if (!length) {
     yield [];
   } else {
-    for (const index in array) {
-      const elementToInject = array[index];
-      const others = array.slice(index + 1);
+    for (let i = 0; i < array.length; ++i) {
+      const elementToInject = array[i];
+      const others = array.slice(i + 1);
       for (const smallerPermutation of permutations(others, length - 1)) {
-        for (let i = 0; i <= smallerPermutation.length; ++i) {
+        for (let j = 0; j <= smallerPermutation.length; ++j) {
           const copy = Array.from(smallerPermutation);
-          copy.splice(i, 0, elementToInject);
+          copy.splice(j, 0, elementToInject);
           yield copy;
         }
       }
@@ -47,7 +47,7 @@ function* permutations(array, length) {
  * @param {Number} end
  * @param {Number} step
  */
-function* xrange(start, end, step = 1) {
+function* xrange(start, end?, step = 1) {
   if (!end) {
     end = start;
     start = 0;
@@ -64,9 +64,9 @@ function* xrange(start, end, step = 1) {
  * @param {Number} end
  * @param {Number} step
  */
-function range(start, end, step = 1) {
+function range(start, end?, step = 1) {
   const result = [];
-  for (let i of xrange(start, end, step)) {
+  for (const i of xrange(start, end, step)) {
     result.push(i);
   }
   return result;

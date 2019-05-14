@@ -1,4 +1,7 @@
 class Graph {
+  public numEdges;
+  public numVertices;
+  public edges;
   constructor(numVertices) {
     this.numEdges = 0;
     this.numVertices = numVertices;
@@ -8,7 +11,7 @@ class Graph {
     }
   }
 
-  addEdge(thisVertex, thatVertex) {
+  public addEdge(thisVertex, thatVertex) {
     if (thisVertex === thatVertex) {
       throw new Error("Parallel edges are not allowed.");
     }
@@ -19,16 +22,16 @@ class Graph {
     ++this.numEdges;
   }
 
-  addVertex() {
+  public addVertex() {
     this.edges.set(this.numVertices, []);
     ++this.numVertices;
   }
 
-  degree(vertex) {
+  public degree(vertex) {
     return this.edges.get(vertex).length;
   }
 
-  duplicate() {
+  public duplicate() {
     const copy = new Graph(this.numVertices);
     copy.numEdges = this.numEdges;
     for (const [vertex, edges] of this.edges) {
@@ -41,11 +44,11 @@ class Graph {
     return copy;
   }
 
-  neighbors(vertex) {
+  public neighbors(vertex) {
     return this.edges.get(vertex);
   }
 
-  validateVertex(vertex) {
+  public validateVertex(vertex) {
     if (vertex < 0 || vertex >= this.numVertices) {
       throw new RangeError("The given vertex does not exist in the graph.");
     }

@@ -1,4 +1,7 @@
 class UnionFind {
+  public numComponents;
+  public parents;
+  public ranks;
   constructor(numComponents) {
     this.numComponents = numComponents;
     this.parents = new Array(numComponents);
@@ -9,7 +12,7 @@ class UnionFind {
     }
   }
 
-  find(component) {
+  public find(component) {
     while (component !== this.parents[component]) {
       this.parents[component] = this.parents[this.parents[component]];
       component = this.parents[component];
@@ -17,15 +20,15 @@ class UnionFind {
     return component;
   }
 
-  count() {
+  public count() {
     return this.numComponents;
   }
 
-  connected(componentA, componentB) {
+  public connected(componentA, componentB) {
     return this.parents[componentA] === this.parents[componentB];
   }
 
-  union(componentA, componentB) {
+  public union(componentA, componentB) {
     const parentA = this.find(componentA);
     const parentB = this.find(componentB);
 
