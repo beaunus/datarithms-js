@@ -5,8 +5,8 @@
   "scripts": {
     "nodemon": "nodemon --watch 'src/**/*.ts' --exec 'ts-node'",
     "lint": "tslint --fix **/*.ts",
-    "test": "mocha -r ts-node/register src/**/*.ts",
-    "test:watch": "mocha -r ts-node/register --watch-extensions ts -w src/**/*.ts"
+    "test": "mocha",
+    "test:watch": "mocha --watch-extensions ts -w"
   },
   "repository": {
     "type": "git",

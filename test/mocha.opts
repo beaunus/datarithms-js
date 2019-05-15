@@ -1,0 +1,4 @@
+-r ts-node/register
+--timeout 0
+
+./src/**/*.spec.ts
