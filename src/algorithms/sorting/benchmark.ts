@@ -34,7 +34,7 @@ const typesOfInput = {
   sortedArrayOfStrings: () => _.cloneDeep(sortedArrayOfStrings),
 };
 
-let hue = 0;
+let hue = _.random(0, 256);
 
 for (const [name, functionToGenerateInput] of Object.entries(typesOfInput)) {
   const suite = new Benchmark.Suite(name);
