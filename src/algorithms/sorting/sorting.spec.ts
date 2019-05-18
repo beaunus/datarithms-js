@@ -3,10 +3,11 @@ import { expect } from "chai";
 import * as _ from "lodash";
 
 import { insertionSort } from "./insertion-sort";
+import { quickSort3WayAlgs4 } from "./quick-sort-3way.algs4";
 import { quickSortAlgs4 } from "./quick-sort.algs4";
 import { quickSortWikipedia } from "./quick-sort.wikipedia";
 
-const FUNCTIONS_TO_TEST = [insertionSort, quickSortAlgs4, quickSortWikipedia];
+const FUNCTIONS_TO_TEST = [insertionSort, quickSort3WayAlgs4, quickSortAlgs4, quickSortWikipedia];
 
 const MAX_NUM_ELEMENTS = 100;
 

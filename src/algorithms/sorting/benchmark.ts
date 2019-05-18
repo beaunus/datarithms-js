@@ -5,6 +5,7 @@ import * as chalk from "chalk";
 import * as _ from "lodash";
 
 import { insertionSort } from "./insertion-sort";
+import { quickSort3WayAlgs4 } from "./quick-sort-3way.algs4";
 import { quickSortAlgs4 } from "./quick-sort.algs4";
 import { quickSortWikipedia } from "./quick-sort.wikipedia";
 
@@ -15,7 +16,13 @@ const sortedArrayOfIntegers = _.range(NUM_ELEMENTS);
 const sortedArrayOfStrings = _.cloneDeep(sortedArrayOfIntegers).map(x => `${x}`);
 
 const builtIn = array => array.sort();
-const FUNCTIONS_TO_TEST = [builtIn, insertionSort, quickSortAlgs4, quickSortWikipedia];
+const FUNCTIONS_TO_TEST = [
+  builtIn,
+  insertionSort,
+  quickSort3WayAlgs4,
+  quickSortAlgs4,
+  quickSortWikipedia,
+];
 
 const typesOfInput = {
   arrayOfIdenticalNumbers: () => arrayOfIdenticalNumbers,
