@@ -9,6 +9,7 @@
       "severity": "warning"
     },
     "object-literal-sort-keys": true,
-    "ordered-imports": true
+    "ordered-imports": true,
+    "trailing-comma": [true, { "multiline": "always", "singleline": "never" }]
   }
 }
