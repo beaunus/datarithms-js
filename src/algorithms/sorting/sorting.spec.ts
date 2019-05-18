@@ -2,14 +2,14 @@ import { expect } from "chai";
 
 import * as _ from "lodash";
 
-import { insertionSort } from "./insertion-sort";
+import { insertionSortWikipedia } from "./insertion-sort.wikipedia";
 import { mergeSort } from "./merge-sort.algs4";
 import { quickSort3WayAlgs4 } from "./quick-sort-3way.algs4";
 import { quickSortAlgs4 } from "./quick-sort.algs4";
 import { quickSortWikipedia } from "./quick-sort.wikipedia";
 
 const FUNCTIONS_TO_TEST = [
-  insertionSort,
+  insertionSortWikipedia,
   mergeSort,
   quickSort3WayAlgs4,
   quickSortAlgs4,

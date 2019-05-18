@@ -4,7 +4,7 @@ import * as Benchmark from "benchmark";
 import * as chalk from "chalk";
 import * as _ from "lodash";
 
-import { insertionSort } from "./insertion-sort";
+import { insertionSortWikipedia } from "./insertion-sort.wikipedia";
 import { mergeSort } from "./merge-sort.algs4";
 import { quickSort3WayAlgs4 } from "./quick-sort-3way.algs4";
 import { quickSortAlgs4 } from "./quick-sort.algs4";
@@ -19,7 +19,7 @@ const sortedArrayOfStrings = _.cloneDeep(sortedArrayOfIntegers).map(x => `${x}`)
 const builtIn = array => array.sort();
 const FUNCTIONS_TO_TEST = [
   builtIn,
-  insertionSort,
+  insertionSortWikipedia,
   mergeSort,
   quickSort3WayAlgs4,
   quickSortAlgs4,
