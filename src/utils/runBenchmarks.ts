@@ -25,14 +25,18 @@ function runBenchmarks(functionsToTest, inputGenerators) {
         }));
         resultEntries.sort((a, b) => b.opsPerSecond - a.opsPerSecond);
         const sortedResults = {};
-        for (const [name, opsPerSecond] of Object.entries(resultEntries)) {
+        for (const { name, opsPerSecond } of resultEntries) {
           sortedResults[name] = opsPerSecond;
         }
         console.table(sortedResults);
-        console.log(color("--------------------"));
+        if (this.name) {
+          console.log(color("--------------------"));
+        }
       })
       .on("start", function() {
-        console.log(color(this.name));
+        if (this.name) {
+          console.log(color(this.name));
+        }
       })
       .run({ async: false });
     hue += 100;
