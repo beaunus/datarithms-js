@@ -6,9 +6,11 @@ import { runBenchmarks } from "../../utils/runBenchmarks";
 
 import { insertionSortMemory } from "./insertion-sort.memory";
 import { insertionSortWikipedia } from "./insertion-sort.wikipedia";
-import { mergeSort } from "./merge-sort.algs4";
+import { mergeSortAlgs4 } from "./merge-sort.algs4";
+import { mergeSortMemory } from "./merge-sort.memory";
 import { quickSort3WayAlgs4 } from "./quick-sort-3way.algs4";
 import { quickSortAlgs4 } from "./quick-sort.algs4";
+import { quickSortMemory } from "./quick-sort.memory";
 import { quickSortWikipedia } from "./quick-sort.wikipedia";
 
 const builtIn = array => array.sort();
@@ -17,9 +19,11 @@ const FUNCTIONS_TO_TEST = [
   builtIn,
   insertionSortMemory,
   insertionSortWikipedia,
-  mergeSort,
+  mergeSortAlgs4,
+  mergeSortMemory,
   quickSort3WayAlgs4,
   quickSortAlgs4,
+  quickSortMemory,
   quickSortWikipedia,
 ];
 

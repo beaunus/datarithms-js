@@ -1,4 +1,4 @@
-function mergeSort(a) {
+function mergeSortAlgs4(a) {
   const aux = new Array(a.length);
   sort(a, aux, 0, a.length - 1);
   return a;
@@ -34,4 +34,4 @@ function merge(a, aux, lo, mid, hi) {
   }
 }
 
-export { mergeSort };
+export { mergeSortAlgs4 };

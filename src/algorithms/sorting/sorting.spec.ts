@@ -4,23 +4,27 @@ import * as _ from "lodash";
 
 // import { insertionSortMemory } from "./insertion-sort.memory";
 import { insertionSortWikipedia } from "./insertion-sort.wikipedia";
-import { mergeSort } from "./merge-sort.algs4";
+import { mergeSortAlgs4 } from "./merge-sort.algs4";
+// import { mergeSortMemory } from "./merge-sort.memory";
 import { quickSort3WayAlgs4 } from "./quick-sort-3way.algs4";
 import { quickSortAlgs4 } from "./quick-sort.algs4";
+// import { quickSortMemory } from "./quick-sort.memory";
 import { quickSortWikipedia } from "./quick-sort.wikipedia";
 
 const FUNCTIONS_TO_TEST = [
   // insertionSortMemory,
   insertionSortWikipedia,
-  mergeSort,
+  mergeSortAlgs4,
+  // mergeSortMemory,
   quickSort3WayAlgs4,
   quickSortAlgs4,
+  // quickSortMemory,
   quickSortWikipedia,
 ];
 
 const MAX_NUM_ELEMENTS = 100;
 
-describe.only("sorting", () => {
+describe("sorting", () => {
   for (const func of FUNCTIONS_TO_TEST) {
     describe(`${func.name}`, () => {
       expectItToSortAnArray(() => _.random(Number.MAX_SAFE_INTEGER), func, "integers");
