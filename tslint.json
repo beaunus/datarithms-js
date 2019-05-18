@@ -1,13 +1,9 @@
 {
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
-    "max-line-length": {
-      "options": [100],
-      "severity": "warning"
-    },
-    "no-console": {
-      "severity": "warning"
-    },
+    "max-line-length": { "options": [100], "severity": "warning" },
+    "no-bitwise": false,
+    "no-console": { "severity": "warning" },
     "object-literal-sort-keys": true,
     "ordered-imports": true,
     "trailing-comma": [true, { "multiline": "always", "singleline": "never" }]
