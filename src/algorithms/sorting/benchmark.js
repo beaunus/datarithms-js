@@ -27,7 +27,7 @@ const FUNCTIONS_TO_TEST = [
   quickSortWikipedia,
 ];
 
-const INPUT_SIZE = 1000;
+const INPUT_SIZE = 10000;
 const element = Math.random();
 const arrayOfIdenticalNumbers = _.times(INPUT_SIZE, () => element);
 const sortedArrayOfIntegers = _.range(INPUT_SIZE);
