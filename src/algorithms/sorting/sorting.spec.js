@@ -2,23 +2,23 @@ import { expect } from "chai";
 
 import * as _ from "lodash";
 
-// import { insertionSortMemory } from "./insertion-sort.memory";
+import { insertionSortMemory } from "./insertion-sort.memory";
 import { insertionSortWikipedia } from "./insertion-sort.wikipedia";
 import { mergeSortAlgs4 } from "./merge-sort.algs4";
-// import { mergeSortMemory } from "./merge-sort.memory";
+import { mergeSortMemory } from "./merge-sort.memory";
 import { quickSort3WayAlgs4 } from "./quick-sort-3way.algs4";
 import { quickSortAlgs4 } from "./quick-sort.algs4";
-// import { quickSortMemory } from "./quick-sort.memory";
+import { quickSortMemory } from "./quick-sort.memory";
 import { quickSortWikipedia } from "./quick-sort.wikipedia";
 
 const FUNCTIONS_TO_TEST = [
-  // insertionSortMemory,
+  insertionSortMemory,
   insertionSortWikipedia,
   mergeSortAlgs4,
-  // mergeSortMemory,
+  mergeSortMemory,
   quickSort3WayAlgs4,
   quickSortAlgs4,
-  // quickSortMemory,
+  quickSortMemory,
   quickSortWikipedia,
 ];
 
