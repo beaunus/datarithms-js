@@ -7,7 +7,7 @@ import * as _ from "lodash";
  * @param {Array<Function>} inputGenerators
  */
 function runBenchmarks(functionsToTest, inputGenerators) {
-  let hue = _.random(0, 256);
+  let hue = _.random(0, 255);
   for (const inputGenerator of inputGenerators) {
     const suite = new Benchmark.Suite(inputGenerator.name);
     for (const functionToTest of functionsToTest) {
