@@ -47,7 +47,7 @@ function* permutations(array, length) {
  * @param {Number} end
  * @param {Number} step
  */
-function* xrange(start, end?, step = 1) {
+function* xrange(start, end, step = 1) {
   if (!end) {
     end = start;
     start = 0;
@@ -64,7 +64,7 @@ function* xrange(start, end?, step = 1) {
  * @param {Number} end
  * @param {Number} step
  */
-function range(start, end?, step = 1) {
+function range(start, end, step = 1) {
   const result = [];
   for (const i of xrange(start, end, step)) {
     result.push(i);
