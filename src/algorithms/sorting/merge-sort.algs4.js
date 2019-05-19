@@ -1,9 +1,19 @@
+/**
+ * @param {Array<any>} a
+ * @return {Array<any>}
+ */
 function mergeSortAlgs4(a) {
   const aux = new Array(a.length);
   sort(a, aux, 0, a.length - 1);
   return a;
 }
 
+/**
+ * @param {Array<any>} a
+ * @param {Array<any>} aux
+ * @param {number} lo
+ * @param {number} hi
+ */
 function sort(a, aux, lo, hi) {
   if (hi <= lo) {
     return;
@@ -14,6 +24,14 @@ function sort(a, aux, lo, hi) {
   merge(a, aux, lo, mid, hi);
 }
 
+/**
+ *
+ * @param {Array<any>} a
+ * @param {Array<any>} aux
+ * @param {number} lo
+ * @param {number} mid
+ * @param {number} hi
+ */
 function merge(a, aux, lo, mid, hi) {
   for (let k = lo; k <= hi; k++) {
     aux[k] = a[k];
