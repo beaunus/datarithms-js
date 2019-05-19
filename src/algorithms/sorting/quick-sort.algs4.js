@@ -1,11 +1,20 @@
 import { shuffle } from "../knuth-shuffle";
 
+/**
+ * @param {Array<any>} a
+ * @return {Array<any>}
+ */
 function quickSortAlgs4(a) {
   shuffle(a);
   sort(a, 0, a.length - 1);
   return a;
 }
 
+/**
+ * @param {Array<any>} a
+ * @param {number} lo
+ * @param {number} hi
+ */
 function sort(a, lo, hi) {
   if (hi <= lo) {
     return;
@@ -15,18 +24,24 @@ function sort(a, lo, hi) {
   sort(a, j + 1, hi);
 }
 
+/**
+ * @param {Array<any>} a
+ * @param {number} lo
+ * @param {number} hi
+ * @return {number}
+ */
 function partition(a, lo, hi) {
   let i = lo;
   let j = hi + 1;
   const v = a[lo];
   while (true) {
-    while (less(a[++i], v)) {
+    while (a[++i] < v) {
       if (i === hi) {
         break;
       }
     }
 
-    while (less(v, a[--j])) {
+    while (v < a[--j]) {
       if (j === lo) {
         break;
       }
@@ -44,10 +59,11 @@ function partition(a, lo, hi) {
   return j;
 }
 
-function less(v, w) {
-  return v < w;
-}
-
+/**
+ * @param {Array<any>} array
+ * @param {number} i
+ * @param {number} j
+ */
 function exch(array, i, j) {
   const temp = array[i];
   array[i] = array[j];

@@ -1,15 +1,23 @@
 import { shuffle } from "../knuth-shuffle";
 
+/**
+ * @param {Array<any>} a
+ * @return {Array<any>}
+ */
 function quickSort3WayAlgs4(a) {
   shuffle(a);
   sort(a, 0, a.length - 1);
   return a;
 }
 
+/**
+ * @param {Array<any>} a
+ * @param {number} lo
+ * @param {number} hi
+ */
 function sort(a, lo, hi) {
-  if (lo >= hi) {
-    return;
-  }
+  if (lo >= hi) return;
+
   let lt = lo;
   let gt = hi;
   const pivot = a[lo];
