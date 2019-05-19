@@ -34,15 +34,4 @@ function sort(array, lo, hi) {
   sort(array, gt + 1, hi);
 }
 
-/**
- * @param {Array<any>} array
- * @param {number} i
- * @param {number} j
- */
-function swap(array, i, j) {
-  const temp = array[i];
-  array[i] = array[j];
-  array[j] = temp;
-}
-
 export { quickSortMemory };
