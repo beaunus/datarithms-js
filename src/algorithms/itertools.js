@@ -1,8 +1,8 @@
 /**
  * Iterate over all combinations of the given length from the given array.
  * @param {Array} array
- * @param {Number} length
- * @returns {Array}
+ * @param {number} length
+ * @yields {Array}
  */
 function* combinations(array, length) {
   if (!length) {
@@ -19,8 +19,8 @@ function* combinations(array, length) {
 /**
  * Iterate over all permutations of the given length from the given array.
  * @param {Array} array
- * @param {Number} length
- * @returns {Array}
+ * @param {number} length
+ * @yields {Array}
  */
 function* permutations(array, length) {
   if (!length) {
@@ -43,9 +43,9 @@ function* permutations(array, length) {
 /**
  * Iterate over all numbers (incrementing by the given step),
  * between the given start (inclusive) and end (exclusive).
- * @param {Number} start
- * @param {Number} end
- * @param {Number} step
+ * @param {number} start
+ * @param {number} end
+ * @param {number} step
  */
 function* xrange(start, end, step = 1) {
   if (!end) {
@@ -60,11 +60,12 @@ function* xrange(start, end, step = 1) {
 /**
  * Return an array with all numbers (incrementing by the given step),
  * between the given start (inclusive) and end (exclusive).
- * @param {Number} start
- * @param {Number} end
- * @param {Number} step
+ * @param {number} start
+ * @param {number} end
+ * @param {number} step
+ * @return {Array<number>}
  */
-function range(start, end, step = 1) {
+function range(start, end = null, step = 1) {
   const result = [];
   for (const i of xrange(start, end, step)) {
     result.push(i);

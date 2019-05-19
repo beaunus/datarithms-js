@@ -2,6 +2,7 @@ import { indexOf } from "./binary-search";
 
 /**
  * @param {Array} array
+ * @return {number}
  */
 function bruteForce(array) {
   let count = 0;
@@ -19,6 +20,7 @@ function bruteForce(array) {
 
 /**
  * @param {Array} array
+ * @return {number}
  */
 function quadratic(array) {
   array.sort((a, b) => a - b);

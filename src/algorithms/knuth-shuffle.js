@@ -1,5 +1,6 @@
 /**
- * @param {Array} array
+ * @param {Array<any>} array
+ * @return {Array<any>}
  */
 function shuffle(array) {
   for (let i = 0; i < array.length; ++i) {

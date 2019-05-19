@@ -2,6 +2,7 @@ import { expect } from "chai";
 import * as _ from "lodash";
 
 import { shuffle } from "./knuth-shuffle";
+import { range } from "./itertools";
 
 describe("shuffle", () => {
   it("should be a function", () => {
@@ -33,7 +34,7 @@ describe("shuffle", () => {
     }
 
     for (let i = 0; i < NUM_TRIALS; ++i) {
-      const arrayToShuffle = initializeArray(NUM_ELEMENTS);
+      const arrayToShuffle = range(NUM_ELEMENTS);
       shuffle(arrayToShuffle);
       for (const j of arrayToShuffle) {
         const element = arrayToShuffle[j];
@@ -53,14 +54,12 @@ describe("shuffle", () => {
   });
 });
 
-function initializeArray(numElements) {
-  const result = [];
-  for (let i = 0; i < numElements; ++i) {
-    result[i] = i;
-  }
-  return result;
-}
 
+/**
+ * @param {Array} array 
+ * @param {number} expectedValue 
+ * @return {number}
+ */
 function getMaximumVariance(array, expectedValue) {
   let result = 0;
   for (const i of array) {

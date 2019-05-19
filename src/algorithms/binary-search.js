@@ -1,6 +1,7 @@
 /**
- * @param {Array} array
- * @param {Number} element
+ * @param {Array<any>} array
+ * @param {number} element
+ * @return {number}
  */
 function indexOf(array, element) {
   let lo = 0;
