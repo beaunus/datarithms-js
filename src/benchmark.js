@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-expression */
+/* eslint-disable no-invalid-this */
 
 import { Suite } from "benchmark";
 

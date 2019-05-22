@@ -1,6 +1,6 @@
 /**
- * Sort the given array in-place using insertion sort and return the sorted array.
  * @param {Array} array
+ * @return {Array}
  */
 function insertionSortWikipedia(array) {
   for (let i = 1; i < array.length; ++i) {
