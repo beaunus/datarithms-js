@@ -19,7 +19,7 @@ const FUNCTIONS_TO_TEST = [
   quickSort3WayAlgs4,
   quickSortAlgs4,
   quickSortMemory,
-  quickSortWikipedia,
+  quickSortWikipedia
 ];
 
 const MAX_NUM_ELEMENTS = 100;
@@ -27,7 +27,11 @@ const MAX_NUM_ELEMENTS = 100;
 describe("sorting", () => {
   for (const func of FUNCTIONS_TO_TEST) {
     describe(`${func.name}`, () => {
-      expectItToSortAnArray(() => _.random(Number.MAX_SAFE_INTEGER), func, "integers");
+      expectItToSortAnArray(
+        () => _.random(Number.MAX_SAFE_INTEGER),
+        func,
+        "integers"
+      );
       expectItToSortAnArray(() => Math.random(), func, "numbers");
       expectItToSortAnArray(() => Math.random().toString(), func, "strings");
       expectItToSortAnArray(() => Math.random() > 0.5, func, "booleans");
@@ -35,16 +39,28 @@ describe("sorting", () => {
   }
 });
 
-function expectItToSortAnArray(iteratee, sortFunction, elementDescription) {
+/**
+ *
+ * @param {Function} elementCreator
+ * @param {Function} sortFunction
+ * @param {string} elementDescription
+ */
+function expectItToSortAnArray(
+  elementCreator,
+  sortFunction,
+  elementDescription
+) {
   it(`should sort an array of ${elementDescription}`, () => {
     for (let numElements = 0; numElements < MAX_NUM_ELEMENTS; ++numElements) {
       const array = [];
       for (let i = 0; i < numElements; ++i) {
-        array.push(iteratee());
+        array.push(elementCreator());
       }
       const actual = sortFunction([...array]);
       const expected =
-        typeof array[0] === "number" ? [...array].sort((a, b) => a - b) : [...array].sort();
+        typeof array[0] === "number"
+          ? [...array].sort((a, b) => a - b)
+          : [...array].sort();
       expect(actual).to.deep.equal(expected);
     }
   });
