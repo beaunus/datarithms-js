@@ -12,7 +12,7 @@ const FUNCTIONS_TO_TEST = [
   generatePermutationsHeapRecursive2
 ];
 
-describe.only("permutations", () => {
+describe("permutations", () => {
   for (const fn of FUNCTIONS_TO_TEST) {
     describe("generatePermutationsHeap", () => {
       it("should generate the correct results if the array has 1 element", () => {
