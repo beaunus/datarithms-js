@@ -1,4 +1,5 @@
 import { shuffle } from "../knuth-shuffle";
+import { swap } from "../swap/swap";
 
 /**
  * @param {Array<any>} array
