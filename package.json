@@ -32,7 +32,8 @@
     "husky": "^2.3.0",
     "lint-staged": "^8.1.7",
     "mocha": "^6.1.4",
-    "prettier": "^1.14.3"
+    "prettier": "^1.14.3",
+    "uuid": "^3.3.2"
   },
   "lint-staged": {
     "*.js": [
