@@ -1,6 +1,5 @@
 import { expect } from "chai";
-
-import * as _ from "lodash";
+import { v4 } from "uuid";
 
 import { insertionSortMemory } from "./insertion-sort.memory";
 import { insertionSortWikipedia } from "./insertion-sort.wikipedia";
@@ -27,14 +26,12 @@ const MAX_NUM_ELEMENTS = 100;
 describe("sorting", () => {
   for (const func of FUNCTIONS_TO_TEST) {
     describe(`${func.name}`, () => {
-      expectItToSortAnArray(
-        () => _.random(Number.MAX_SAFE_INTEGER),
-        func,
-        "integers"
-      );
-      expectItToSortAnArray(() => Math.random(), func, "numbers");
-      expectItToSortAnArray(() => Math.random().toString(), func, "strings");
-      expectItToSortAnArray(() => Math.random() > 0.5, func, "booleans");
+      expectItToSortAnArray(() => Math.random(), func, "random numbers");
+      expectItToSortAnArray(() => v4(), func, "random strings");
+      expectItToSortAnArray(() => Math.random() > 0.5, func, "random booleans");
+      expectItToSortAnArray(() => 1, func, "identical numbers");
+      expectItToSortAnArray(() => "1", func, "random strings");
+      expectItToSortAnArray(() => true, func, "random booleans");
     });
   }
 });
