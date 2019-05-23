@@ -1,9 +1,7 @@
-/**
- * @param {Array<any>} array
- * @return {Array<any>}
- */
+/* eslint-disable require-jsdoc*/
+
 function mergeSortMemory(array) {
-  array.sort((a, b) => a - b);
+  array.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
   return array;
 }
 
