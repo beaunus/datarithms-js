@@ -5,7 +5,7 @@ import { swap } from "../swap/swap";
  *
  * @param {object} param
  * @param {Array<*>} param.array
- * @param {boolean} param.SHOULD_DISPLAY_SWAPS
+ * @param {boolean} [param.SHOULD_DISPLAY_SWAPS]
  */
 function* generatePermutationsHeapIter({
   array,
