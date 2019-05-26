@@ -7,7 +7,10 @@ import {
   generatePermutationsHeapRecursive2
 } from "./permutations.heaps";
 
+import { generatePermutationsMemory } from "./permutations.memory";
+
 const FUNCTIONS_TO_TEST = [
+  generatePermutationsMemory,
   generatePermutationsHeapIter,
   generatePermutationsHeapRecursive1,
   generatePermutationsHeapRecursive2
