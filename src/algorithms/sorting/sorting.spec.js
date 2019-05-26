@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { v4 } from "uuid";
 
+import { heapSortMemory } from "./heap-sort.memory";
 import { insertionSortMemory } from "./insertion-sort.memory";
 import { insertionSortWikipedia } from "./insertion-sort.wikipedia";
 import { mergeSortAlgs4 } from "./merge-sort.algs4";
@@ -11,6 +12,7 @@ import { quickSortMemory } from "./quick-sort.memory";
 import { quickSortWikipedia } from "./quick-sort.wikipedia";
 
 const FUNCTIONS_TO_TEST = [
+  heapSortMemory,
   insertionSortMemory,
   insertionSortWikipedia,
   mergeSortAlgs4,
