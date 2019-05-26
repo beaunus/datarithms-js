@@ -4,49 +4,56 @@ import { runBenchmarks } from "../../utils/runBenchmarks";
 
 import { range } from "../../algorithms/itertools";
 
+import { generatePermutationsMemory } from "./permutations.memory";
+
 import {
   generatePermutationsHeapIter,
   generatePermutationsHeapRecursive1,
   generatePermutationsHeapRecursive2
-} from "./permutations";
+} from "./permutations.heaps";
+
+const memory = array => {
+  const generator = generatePermutationsMemory({ array });
+  while (!generator.next().done) {}
+};
 
 const iter = array => {
-  const generator = generatePermutationsHeapIter(array);
+  const generator = generatePermutationsHeapIter({ array });
   while (!generator.next().done) {}
 };
 const recursive1 = array => {
-  const generator = generatePermutationsHeapRecursive1(array);
+  const generator = generatePermutationsHeapRecursive1({ array });
   while (!generator.next().done) {}
 };
 const recursive2 = array => {
-  const generator = generatePermutationsHeapRecursive2(array);
+  const generator = generatePermutationsHeapRecursive2({ array });
   while (!generator.next().done) {}
 };
 
-const FUNCTIONS_TO_TEST = [iter, recursive1, recursive2];
+const FUNCTIONS_TO_TEST = [memory, iter, recursive1, recursive2];
 
 const one = () => range(1);
 const two = () => range(2);
 const three = () => range(3);
 const four = () => range(4);
-const five = () => range(5);
-const six = () => range(6);
-const seven = () => range(7);
-const eight = () => range(8);
-const nine = () => range(9);
-const ten = () => range(10);
+// const five = () => range(5);
+// const six = () => range(6);
+// const seven = () => range(7);
+// const eight = () => range(8);
+// const nine = () => range(9);
+// const ten = () => range(10);
 
 const INPUT_GENERATORS = [
   one,
   two,
   three,
-  four,
-  five,
-  six,
-  seven,
-  eight,
-  nine,
-  ten
+  four
+  // five,
+  // six,
+  // seven,
+  // eight,
+  // nine,
+  // ten
 ];
 
 runBenchmarks(FUNCTIONS_TO_TEST, INPUT_GENERATORS);
