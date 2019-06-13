@@ -4,7 +4,7 @@ import { v4 } from "uuid";
 
 import { bfs, createGraph } from "./graph";
 
-describe.only("graph", () => {
+describe("graph", () => {
   describe("bfs", () => {
     it("should return the correct result if there is only one edge", () => {
       const from = v4();
