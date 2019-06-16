@@ -18,6 +18,7 @@ describe("graph", () => {
         }
       }
     });
+
     it("should throw an error if the given vertices are the same", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
         const graph = new Graph(numVertices);
@@ -29,6 +30,7 @@ describe("graph", () => {
         }
       }
     });
+
     it("should not throw an error if the given vertices are not the same", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
         const graph = new Graph(numVertices);
@@ -38,6 +40,7 @@ describe("graph", () => {
       }
     });
   });
+
   describe("degree", () => {
     it("should return 0 for all vertices on a new graph", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
@@ -47,6 +50,7 @@ describe("graph", () => {
         }
       }
     });
+
     it("should return numVertices - 1 for all vertices in a complete graph", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
         const graph = generateCompleteGraph(numVertices);
@@ -56,6 +60,7 @@ describe("graph", () => {
       }
     });
   });
+
   describe("duplicate", () => {
     it("should return a graph that is identical to the original", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
@@ -64,35 +69,36 @@ describe("graph", () => {
         expect(copyGraph.numVertices).to.equal(originalGraph.numVertices);
         expect(copyGraph.numEdges).to.equal(originalGraph.numEdges);
         for (let vertex = 0; vertex < originalGraph.numVertices; ++vertex) {
-          expect(copyGraph.neighbors(vertex)).to.deep.equal(
+          expect(copyGraph.neighbors(vertex)).to.have.ordered.members(
             originalGraph.neighbors(vertex)
           );
         }
       }
     });
   });
+
   describe("neighbors", () => {
     it("should return an empty array for every vertex in a completely disconnected graph", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
         const graph = new Graph(numVertices);
         for (let vertex = 0; vertex < numVertices; ++vertex) {
-          expect(graph.neighbors(vertex)).to.deep.equal([]);
+          expect(graph.neighbors(vertex)).to.be.an("array").that.is.empty;
         }
       }
     });
+
     it("should return an array containing all vertices (except the vertex in question) in a complete graph", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
         const graph = generateCompleteGraph(numVertices);
         const allVertices = range(numVertices);
         for (let vertex = 0; vertex < numVertices; ++vertex) {
-          const otherVertices = new Set(allVertices);
-          otherVertices.delete(vertex);
-          const expected = Array.from(otherVertices);
-          expect(graph.neighbors(vertex).sort()).to.deep.equal(expected.sort());
+          const expected = allVertices.filter(v => v !== vertex);
+          expect(graph.neighbors(vertex)).to.have.members(expected);
         }
       }
     });
   });
+
   describe("numVertices", () => {
     it("should return the number of vertices that the graph was constructed with", () => {
       for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
@@ -101,6 +107,7 @@ describe("graph", () => {
       }
     });
   });
+
   describe("numEdges", () => {
     it("should return the correct number of edges in a complete graph", () => {
       for (let numVertices = 1; numVertices < MAX_NUM_VERTICES; ++numVertices) {
