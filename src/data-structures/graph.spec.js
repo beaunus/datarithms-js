@@ -1,90 +1,113 @@
-import { expect } from "chai";
-import * as _ from "lodash";
-import { v4 } from "uuid";
+/* eslint-disable max-len */
 
-import { bfs, createGraph } from "./graph";
+import { expect } from "chai";
+
+import { generateCompleteGraph, Graph } from "./graph";
+import { range } from "../algorithms/itertools";
+
+const MAX_NUM_VERTICES = 10;
 
 describe("graph", () => {
-  describe("bfs", () => {
-    it("should return the correct result if there is only one edge", () => {
-      const from = v4();
-      const to = v4();
-      const graph = { [from]: [to] };
-      const actual = bfs(graph, from);
-      expect(actual).to.deep.equal([from, to]);
-    });
-
-    it("should return the correct result if there are no edges", () => {
-      const from = v4();
-      const graph = { [from]: [] };
-      const actual = bfs(graph, from);
-      expect(actual).to.deep.equal([from]);
-    });
-
-    it("should return the correct result if the graph is a tree with only 2 levels", () => {
-      const root = v4();
-      const NUM_LEAVES = _.random(10, 100);
-      const leaves = _.times(NUM_LEAVES, () => v4());
-      const graph = { [root]: leaves };
-
-      let actual = bfs(graph, root);
-      expect(actual).to.deep.equal([root, ...leaves]);
-
-      for (const leaf of leaves) {
-        actual = bfs(graph, leaf);
-        expect(actual).to.deep.equal([leaf]);
+  describe("addEdge", () => {
+    it("should throw an error if either of the vertices don't exist in the graph", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = new Graph(numVertices);
+        for (let vertex = 0; vertex < numVertices; ++vertex) {
+          expect(() => graph.addEdge(-1, vertex)).to.throw(RangeError);
+          expect(() => graph.addEdge(vertex, -1)).to.throw(RangeError);
+        }
       }
     });
-
-    it("should return the correct result if the graph is a linked list", () => {
-      const root = v4();
-
-      const expected = [root];
-      /** @type {Object.<string, Array<string>>} */
-      const graph = {};
-      let node = root;
-      const NUM_LINKS = _.random(10, 100);
-      for (let i = 0; i < NUM_LINKS; ++i) {
-        const newNode = v4();
-        graph[node] = [newNode];
-        node = newNode;
-        expected.push(newNode);
+    it("should throw an error if the given vertices are the same", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = new Graph(numVertices);
+        for (let vertex = 0; vertex < numVertices; ++vertex) {
+          expect(() => graph.addEdge(vertex, vertex)).to.throw(
+            Error,
+            /self loop/i
+          );
+        }
       }
-      const actual = bfs(graph, root);
-      expect(actual).to.deep.equal(expected);
+    });
+    it("should not throw an error if the given vertices are not the same", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = new Graph(numVertices);
+        for (let vertex = 1; vertex < numVertices; ++vertex) {
+          expect(() => graph.addEdge(vertex, vertex - 1)).to.not.throw();
+        }
+      }
     });
   });
-
-  describe("createGraph", () => {
-    it("should return the correct result when there are no vertices", () => {
-      const actual = createGraph();
-      const expected = {};
-      expect(actual).to.deep.equal(expected);
-    });
-
-    it("should return the correct result when there is one vertex with no edges", () => {
-      const vertex = v4();
-      const actual = createGraph([vertex]);
-      const expected = { [vertex]: [] };
-      expect(actual).to.deep.equal(expected);
-    });
-
-    it("should return the correct result when there are many vertices with many edges", () => {
-      const NUM_VERTICES = _.random(10, 100);
-      const vertices = _.times(NUM_VERTICES, () => v4());
-      /** @type {Array<[string, string]>} */
-      const edges = [];
-      const expected = {};
-      for (const vertex of vertices) {
-        const NUM_EDGES = _.random(0, NUM_VERTICES);
-        const outEdges = _.sampleSize(vertices, NUM_EDGES);
-        expected[vertex] = outEdges;
-        // @ts-ignore
-        edges.push(...outEdges.map(to => [vertex, to]));
+  describe("degree", () => {
+    it("should return 0 for all vertices on a new graph", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = new Graph(numVertices);
+        for (let vertex = 0; vertex < numVertices; ++vertex) {
+          expect(graph.degree(vertex)).to.equal(0);
+        }
       }
-
-      const actual = createGraph(vertices, edges);
-      expect(actual).to.deep.equal(expected);
+    });
+    it("should return numVertices - 1 for all vertices in a complete graph", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = generateCompleteGraph(numVertices);
+        for (let vertex = 0; vertex < numVertices; ++vertex) {
+          expect(graph.degree(vertex)).to.equal(numVertices - 1);
+        }
+      }
+    });
+  });
+  describe("duplicate", () => {
+    it("should return a graph that is identical to the original", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const originalGraph = generateCompleteGraph(numVertices);
+        const copyGraph = originalGraph.duplicate();
+        expect(copyGraph.numVertices).to.equal(originalGraph.numVertices);
+        expect(copyGraph.numEdges).to.equal(originalGraph.numEdges);
+        for (let vertex = 0; vertex < originalGraph.numVertices; ++vertex) {
+          expect(copyGraph.neighbors(vertex)).to.deep.equal(
+            originalGraph.neighbors(vertex)
+          );
+        }
+      }
+    });
+  });
+  describe("neighbors", () => {
+    it("should return an empty array for every vertex in a completely disconnected graph", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = new Graph(numVertices);
+        for (let vertex = 0; vertex < numVertices; ++vertex) {
+          expect(graph.neighbors(vertex)).to.deep.equal([]);
+        }
+      }
+    });
+    it("should return an array containing all vertices (except the vertex in question) in a complete graph", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = generateCompleteGraph(numVertices);
+        const allVertices = range(numVertices);
+        for (let vertex = 0; vertex < numVertices; ++vertex) {
+          const otherVertices = new Set(allVertices);
+          otherVertices.delete(vertex);
+          const expected = Array.from(otherVertices);
+          expect(graph.neighbors(vertex).sort()).to.deep.equal(expected.sort());
+        }
+      }
+    });
+  });
+  describe("numVertices", () => {
+    it("should return the number of vertices that the graph was constructed with", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = new Graph(numVertices);
+        expect(graph.numVertices).to.equal(numVertices);
+      }
+    });
+  });
+  describe("numEdges", () => {
+    it("should return the correct number of edges in a complete graph", () => {
+      for (let numVertices = 1; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = generateCompleteGraph(numVertices);
+        const expectedNumEdges = (numVertices * (numVertices - 1)) / 2;
+        expect(graph.numEdges).to.equal(expectedNumEdges);
+      }
     });
   });
 });
