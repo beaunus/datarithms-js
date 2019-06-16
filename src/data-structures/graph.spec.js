@@ -99,21 +99,21 @@ describe("graph", () => {
     });
   });
 
-  describe("numVertices", () => {
-    it("should return the number of vertices that the graph was constructed with", () => {
-      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
-        const graph = new Graph(numVertices);
-        expect(graph.numVertices).to.equal(numVertices);
-      }
-    });
-  });
-
   describe("numEdges", () => {
     it("should return the correct number of edges in a complete graph", () => {
       for (let numVertices = 1; numVertices < MAX_NUM_VERTICES; ++numVertices) {
         const graph = generateCompleteGraph(numVertices);
         const expectedNumEdges = (numVertices * (numVertices - 1)) / 2;
         expect(graph.numEdges).to.equal(expectedNumEdges);
+      }
+    });
+  });
+
+  describe("numVertices", () => {
+    it("should return the number of vertices that the graph was constructed with", () => {
+      for (let numVertices = 0; numVertices < MAX_NUM_VERTICES; ++numVertices) {
+        const graph = new Graph(numVertices);
+        expect(graph.numVertices).to.equal(numVertices);
       }
     });
   });
