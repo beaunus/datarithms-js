@@ -13,15 +13,15 @@ import * as Tsp from "./tsp";
 import { describe } from "mocha";
 
 describe("tsp", () => {
-  const NUM_VERTICES = _.random(10, 10);
+  const NUM_VERTICES = _.random(2, 10);
+
+  const sandbox = createSandbox();
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("bruteForce", () => {
-    const sandbox = createSandbox();
-
-    afterEach(() => {
-      sandbox.restore();
-    });
-
     it("should call generateAllHamiltonianPaths with the given graph", () => {
       const graph = makeCompleteGraph(NUM_VERTICES);
 
@@ -101,12 +101,50 @@ describe("tsp", () => {
       const NUM_PATHS = _.random(2, 10);
       const paths = _.times(NUM_PATHS, () => makeRandomPath(NUM_VERTICES));
       const actual = Tsp.chooseShortestPath(paths);
-      const actualCost = actual.reduce((acc, [, cost]) => acc + cost, 0);
+      const actualCost = Tsp.computePathCost(actual);
 
       for (const path of paths) {
-        const pathCost = path.reduce((acc, [, cost]) => acc + cost, 0);
+        const pathCost = Tsp.computePathCost(path);
         expect(actualCost).to.be.at.most(pathCost);
       }
+    });
+  });
+
+  describe("computePathCost", () => {
+    it("should return the sum of the costs of the steps in the path", () => {
+      let expected = 0;
+      const path = _.times(NUM_VERTICES, () => {
+        const node = Math.random();
+        const cost = Math.random();
+        expected += cost;
+        return [node, cost];
+      });
+
+      const actual = Tsp.computePathCost(path);
+      expect(actual).to.equal(expected);
+    });
+  });
+
+  describe("getPathRatio", () => {
+    it("should return the cost of thisPath / the cost of thatPath", () => {
+      const stub = sandbox.stub(Tsp, "computePathCost");
+
+      const fakeThisPathCost = Math.random();
+      stub.onCall(0).returns(fakeThisPathCost);
+      const fakeThatPathCost = Math.random();
+      stub.onCall(1).returns(fakeThatPathCost);
+
+      const thisPath = _.times(NUM_VERTICES, () => [
+        Math.random(),
+        Math.random()
+      ]);
+      const thatPath = _.times(NUM_VERTICES, () => [
+        Math.random(),
+        Math.random()
+      ]);
+
+      const actual = Tsp.getPathRatio(thisPath, thatPath);
+      expect(actual).to.equal(fakeThisPathCost / fakeThatPathCost);
     });
   });
 });

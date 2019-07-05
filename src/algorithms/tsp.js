@@ -67,7 +67,7 @@ export function chooseShortestPath(paths) {
   let championCost = Number.MAX_VALUE;
 
   for (const path of paths) {
-    const pathCost = path.reduce((acc, [, cost]) => acc + cost, 0);
+    const pathCost = computePathCost(path);
     if (pathCost < championCost) {
       championPath = path;
       championCost = pathCost;
@@ -75,4 +75,23 @@ export function chooseShortestPath(paths) {
   }
 
   return championPath;
+}
+
+/**
+ *
+ * @param {Path} path
+ * @return {number}
+ */
+export function computePathCost(path) {
+  return path.reduce((acc, [, cost]) => acc + cost, 0);
+}
+
+/**
+ *
+ * @param {Path} thisPath
+ * @param {Path} thatPath
+ * @return {number}
+ */
+export function getPathRatio(thisPath, thatPath) {
+  return exports.computePathCost(thisPath) / exports.computePathCost(thatPath);
 }
