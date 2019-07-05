@@ -80,9 +80,13 @@ describe("tsp", () => {
 
     it("should return the only hamiltonian path if there are two vertices in the graph", () => {
       const graph = makeCompleteGraph(2);
-      const startingVertex = 0;
-      const actual = Tsp.generateAllHamiltonianPaths({ graph, startingVertex });
-      expect(actual).to.deep.equal([[[1, graph[0][1]], [0, graph[1][0]]]]);
+      let startingVertex = 0;
+      let actual = Tsp.generateAllHamiltonianPaths({ graph, startingVertex });
+      expect(actual).to.deep.equal([[[startingVertex, 0], [1, graph[0][1]]]]);
+
+      startingVertex = 1;
+      actual = Tsp.generateAllHamiltonianPaths({ graph, startingVertex });
+      expect(actual).to.deep.equal([[[startingVertex, 0], [0, graph[1][0]]]]);
     });
   });
 

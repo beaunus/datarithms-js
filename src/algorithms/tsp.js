@@ -45,12 +45,13 @@ export function generateAllHamiltonianPaths({ graph, startingVertex }) {
 
   for (const perm of generatePermutationsHeapIter({ array: vertices })) {
     /** @type {Path} */
-    const path = perm.map((vertex, index) => {
-      const prevVertex = index === 0 ? 0 : perm[index - 1];
-      return [vertex, graph[prevVertex][vertex]];
-    });
-    const [lastVertex] = path[path.length - 1];
-    path.push([startingVertex, graph[lastVertex][startingVertex]]);
+    const path = [
+      [startingVertex, 0],
+      ...perm.map((vertex, index) => {
+        const prevVertex = index === 0 ? startingVertex : perm[index - 1];
+        return [vertex, graph[prevVertex][vertex]];
+      })
+    ];
     result.push(path);
   }
   return result;
