@@ -21,6 +21,41 @@ describe("tsp", () => {
     sandbox.restore();
   });
 
+  describe("chooseShortestPath", () => {
+    it("should return the only path if given only one path", () => {
+      const path = makeRandomPath(NUM_VERTICES);
+      const actual = Tsp.chooseShortestPath([path]);
+      expect(actual).to.equal(path);
+    });
+
+    it("should return the shortest path", () => {
+      const NUM_PATHS = _.random(2, 10);
+      const paths = _.times(NUM_PATHS, () => makeRandomPath(NUM_VERTICES));
+      const actual = Tsp.chooseShortestPath(paths);
+      const actualCost = Tsp.computePathCost(actual);
+
+      for (const path of paths) {
+        const pathCost = Tsp.computePathCost(path);
+        expect(actualCost).to.be.at.most(pathCost);
+      }
+    });
+  });
+
+  describe("computePathCost", () => {
+    it("should return the sum of the costs of the steps in the path", () => {
+      let expected = 0;
+      const path = _.times(NUM_VERTICES, () => {
+        const node = Math.random();
+        const cost = Math.random();
+        expected += cost;
+        return [node, cost];
+      });
+
+      const actual = Tsp.computePathCost(path);
+      expect(actual).to.equal(expected);
+    });
+  });
+
   describe("exhaustiveSearch", () => {
     it("should call generateAllHamiltonianPaths with the given graph", () => {
       const graph = makeCompleteGraph(NUM_VERTICES);
@@ -87,41 +122,6 @@ describe("tsp", () => {
       startingVertex = 1;
       actual = Tsp.generateAllHamiltonianPaths({ graph, startingVertex });
       expect(actual).to.deep.equal([[[startingVertex, 0], [0, graph[1][0]]]]);
-    });
-  });
-
-  describe("chooseShortestPath", () => {
-    it("should return the only path if given only one path", () => {
-      const path = makeRandomPath(NUM_VERTICES);
-      const actual = Tsp.chooseShortestPath([path]);
-      expect(actual).to.equal(path);
-    });
-
-    it("should return the shortest path", () => {
-      const NUM_PATHS = _.random(2, 10);
-      const paths = _.times(NUM_PATHS, () => makeRandomPath(NUM_VERTICES));
-      const actual = Tsp.chooseShortestPath(paths);
-      const actualCost = Tsp.computePathCost(actual);
-
-      for (const path of paths) {
-        const pathCost = Tsp.computePathCost(path);
-        expect(actualCost).to.be.at.most(pathCost);
-      }
-    });
-  });
-
-  describe("computePathCost", () => {
-    it("should return the sum of the costs of the steps in the path", () => {
-      let expected = 0;
-      const path = _.times(NUM_VERTICES, () => {
-        const node = Math.random();
-        const cost = Math.random();
-        expected += cost;
-        return [node, cost];
-      });
-
-      const actual = Tsp.computePathCost(path);
-      expect(actual).to.equal(expected);
     });
   });
 
