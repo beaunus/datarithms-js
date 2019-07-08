@@ -21,13 +21,13 @@ describe("tsp", () => {
     sandbox.restore();
   });
 
-  describe("bruteForce", () => {
+  describe("exhaustiveSearch", () => {
     it("should call generateAllHamiltonianPaths with the given graph", () => {
       const graph = makeCompleteGraph(NUM_VERTICES);
 
       sandbox.stub(Tsp, "generateAllHamiltonianPaths").returns([]);
 
-      Tsp.bruteForce(graph, 0);
+      Tsp.exhaustiveSearch(graph, 0);
       expect(
         Tsp.generateAllHamiltonianPaths
       ).to.have.been.calledOnceWithExactly({ graph, startingVertex: 0 });
@@ -46,7 +46,7 @@ describe("tsp", () => {
       sandbox.stub(Tsp, "chooseShortestPath");
 
       const graph = [[Math.random()]];
-      Tsp.bruteForce(graph, Math.random());
+      Tsp.exhaustiveSearch(graph, Math.random());
 
       expect(Tsp.chooseShortestPath).to.have.been.calledOnceWithExactly(
         expected
@@ -65,7 +65,7 @@ describe("tsp", () => {
       sandbox.stub(Tsp, "generateAllHamiltonianPaths");
       sandbox.stub(Tsp, "chooseShortestPath").returns(expected);
 
-      const actual = Tsp.bruteForce(graph, _.random(0, NUM_VERTICES - 1));
+      const actual = Tsp.exhaustiveSearch(graph, _.random(0, NUM_VERTICES - 1));
       expect(actual).to.equal(expected);
     });
   });

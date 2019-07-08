@@ -13,7 +13,7 @@ import { generatePermutationsHeapIter } from "./permutations/permutations.heaps"
  * @param {number} startingVertex
  * @return {{cost: number, path: Array<[number, number]>}}
  */
-export function bruteForce(graph, startingVertex) {
+export function exhaustiveSearch(graph, startingVertex) {
   const allPaths = exports.generateAllHamiltonianPaths({
     graph,
     startingVertex
