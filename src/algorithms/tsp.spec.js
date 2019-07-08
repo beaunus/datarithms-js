@@ -59,7 +59,7 @@ describe("tsp", () => {
 
     describe("generateAllHamiltonianPaths", () => {
       it("should return a single step path with 0 cost if there is only one vertex in the graph", () => {
-        const graph = makeCompleteGraph(1);
+        const graph = makeCompleteGraph({ numVertices: 1 });
         const startingVertex = 0;
         const actual = Tsp.generateAllHamiltonianPaths({
           graph,
@@ -69,7 +69,7 @@ describe("tsp", () => {
       });
 
       it("should return the only hamiltonian path if there are two vertices in the graph", () => {
-        const graph = makeCompleteGraph(2);
+        const graph = makeCompleteGraph({ numVertices: 2 });
         let startingVertex = 0;
         let actual = Tsp.generateAllHamiltonianPaths({ graph, startingVertex });
         expect(actual).to.deep.equal([[[startingVertex, 0], [1, graph[0][1]]]]);
@@ -107,7 +107,7 @@ describe("tsp", () => {
   describe("solutions", () => {
     describe("exhaustiveSearch", () => {
       it("should call generateAllHamiltonianPaths with the given graph", () => {
-        const graph = makeCompleteGraph(NUM_VERTICES);
+        const graph = makeCompleteGraph({ numVertices: NUM_VERTICES });
 
         sandbox.stub(Tsp, "generateAllHamiltonianPaths").returns([]);
 
@@ -138,7 +138,7 @@ describe("tsp", () => {
       });
 
       it("should return the result of chooseShortestPath", () => {
-        const graph = makeCompleteGraph(NUM_VERTICES);
+        const graph = makeCompleteGraph({ numVertices: NUM_VERTICES });
 
         const expected = _.times(_.random(0, NUM_VERTICES - 1), () => {
           /** @type {[number, number]} */
@@ -156,19 +156,111 @@ describe("tsp", () => {
         expect(actual).to.equal(expected);
       });
     });
+
+    describe("nearestNeighbor", () => {
+      it("should return the same answer as exhaustiveSearch for a complete graph when all edges have equal weight", () => {
+        const edgeWeight = Math.random();
+        for (let numVertices = 1; numVertices < NUM_VERTICES; ++numVertices) {
+          const graph = makeCompleteGraph({ numVertices, edgeWeight });
+          for (let i = 0; i < numVertices; ++i) {
+            const startingVertex = i;
+            const expected = Tsp.exhaustiveSearch(graph, startingVertex);
+            const actual = Tsp.nearestNeighbor(graph, startingVertex);
+            expect(actual).to.deep.equal(expected);
+          }
+        }
+      });
+
+      xit("comparison with exhaustiveSearch", () => {
+        const NUM_VERTICES = 9;
+        const metricsByNumVertices = [];
+        const NUM_TRIALS = 1;
+        for (let numVertices = 1; numVertices <= NUM_VERTICES; ++numVertices) {
+          console.log({ numVertices });
+          for (let trialIndex = 0; trialIndex < NUM_TRIALS; ++trialIndex) {
+            console.group();
+            console.log({ trialIndex });
+            metricsByNumVertices[numVertices] = {
+              exhaustiveSearchTimes: [],
+              nearestNeighborTimes: [],
+              correctnessRatios: [],
+              timeRatios: []
+            };
+            const graph = makeCompleteGraph({ numVertices });
+            for (let i = 0; i < numVertices; ++i) {
+              const timeBeforeNearestNeighborSearch = process.hrtime.bigint();
+              const nearestNeighborPath = Tsp.nearestNeighbor(graph, i);
+              const timeAfterNearestNeighborSearch = process.hrtime.bigint();
+              const nearestNeighborDuration =
+                timeAfterNearestNeighborSearch -
+                timeBeforeNearestNeighborSearch;
+
+              const timeBeforeExhaustiveSearch = process.hrtime.bigint();
+              const exhaustiveSearchPath = Tsp.exhaustiveSearch(graph, i);
+              const timeAfterExhaustiveSearch = process.hrtime.bigint();
+              const exhaustiveSearchDuration =
+                timeAfterExhaustiveSearch - timeBeforeExhaustiveSearch;
+
+              const correctnessRatio = Tsp.getPathRatio(
+                nearestNeighborPath,
+                exhaustiveSearchPath
+              );
+              metricsByNumVertices[numVertices].nearestNeighborTimes.push(
+                nearestNeighborDuration
+              );
+              metricsByNumVertices[numVertices].exhaustiveSearchTimes.push(
+                exhaustiveSearchDuration
+              );
+
+              metricsByNumVertices[numVertices].timeRatios.push(
+                exhaustiveSearchDuration / nearestNeighborDuration
+              );
+              metricsByNumVertices[numVertices].correctnessRatios.push(
+                correctnessRatio
+              );
+            }
+            console.groupEnd();
+          }
+        }
+        for (let numVertices = 1; numVertices <= NUM_VERTICES; ++numVertices) {
+          const metrics = metricsByNumVertices[numVertices];
+          metricsByNumVertices[numVertices] = _.mapValues(metrics, mean);
+        }
+        console.dir({ metricsByNumVertices });
+      });
+    });
   });
 });
 
 /**
- * @param {number} numVertices
+ * @param {ReadonlyArray<number|BigInt>} array
+ * @return {number|BigInt}
+ */
+function mean(array) {
+  const isNumber = typeof array[0] === "number";
+  return isNumber
+    ? // @ts-ignore
+      // @ts-ignore
+      array.reduce((acc, cur) => acc + cur, 0) / array.length
+    : // @ts-ignore
+      // @ts-ignore
+      // eslint-disable-next-line new-cap
+      array.reduce((acc, cur) => acc + cur, BigInt(0)) / BigInt(array.length);
+}
+
+/**
+ * @param {object} param
+ * @param {number} param.numVertices
+ * @param {number} [param.edgeWeight]
  * @return {Array<Array<number>>}
  */
-function makeCompleteGraph(numVertices) {
+function makeCompleteGraph({ numVertices, edgeWeight }) {
   const graph = new Array(numVertices);
   for (let i = 0; i < numVertices; ++i) {
     graph[i] = new Array(numVertices);
     for (let j = 0; j < numVertices; ++j) {
-      const weight = j === i ? 0 : Math.random();
+      const weight =
+        j === i ? 0 : edgeWeight !== undefined ? edgeWeight : Math.random();
       graph[i][j] = weight;
     }
   }

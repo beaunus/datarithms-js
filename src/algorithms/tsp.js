@@ -11,7 +11,7 @@ import { generatePermutationsHeapIter } from "./permutations/permutations.heaps"
  *
  * @param {Graph} graph
  * @param {number} startingVertex
- * @return {{cost: number, path: Array<[number, number]>}}
+ * @return {Array<[number, number]>}
  */
 export function exhaustiveSearch(graph, startingVertex) {
   const allPaths = exports.generateAllHamiltonianPaths({
@@ -19,6 +19,33 @@ export function exhaustiveSearch(graph, startingVertex) {
     startingVertex
   });
   return exports.chooseShortestPath(allPaths);
+}
+
+/**
+ *
+ * @param {Graph} graph
+ * @param {number} startingVertex
+ * @return {Array<[number, number]>}
+ */
+export function nearestNeighbor(graph, startingVertex) {
+  /** @type Array<[number, number]> */
+  const result = [];
+  const visited = new Array(graph.length).fill(false);
+  let next = startingVertex;
+  while (result.length < graph.length) {
+    let champion;
+    let championCost = Number.MAX_SAFE_INTEGER;
+    for (let neighbor = 0; neighbor < graph.length; ++neighbor) {
+      if (!visited[neighbor] && graph[next][neighbor] < championCost) {
+        champion = neighbor;
+        championCost = graph[next][neighbor];
+      }
+    }
+    visited[champion] = true;
+    result.push([champion, championCost]);
+    next = champion;
+  }
+  return result;
 }
 
 /**
