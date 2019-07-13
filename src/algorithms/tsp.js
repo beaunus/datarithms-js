@@ -10,28 +10,23 @@ import { generatePermutationsHeapIter } from "./permutations/permutations.heaps"
 /**
  *
  * @param {Graph} graph
- * @param {number} startingVertex
  * @return {Array<[number, number]>}
  */
-export function exhaustiveSearch(graph, startingVertex) {
-  const allPaths = exports.generateAllHamiltonianPaths({
-    graph,
-    startingVertex
-  });
+export function exhaustiveSearch(graph) {
+  const allPaths = exports.generateAllHamiltonianPaths({ graph });
   return exports.chooseShortestPath(allPaths);
 }
 
 /**
  *
  * @param {Graph} graph
- * @param {number} startingVertex
  * @return {Array<[number, number]>}
  */
-export function nearestNeighbor(graph, startingVertex) {
+export function nearestNeighbor(graph) {
   /** @type Array<[number, number]> */
   const result = [];
   const visited = new Array(graph.length).fill(false);
-  let next = startingVertex;
+  let next = 0;
   while (result.length < graph.length) {
     let champion;
     let championCost = Number.MAX_SAFE_INTEGER;
@@ -52,20 +47,13 @@ export function nearestNeighbor(graph, startingVertex) {
  *
  * @param {Object} param
  * @param {Graph} param.graph
- * @param {number} param.startingVertex
  * @return {Array<Path>}
  */
-export function generateAllHamiltonianPaths({ graph, startingVertex }) {
+export function generateAllHamiltonianPaths({ graph }) {
   const vertices = [];
-  for (let i = 0; i < graph.length; ++i) {
-    if (i !== startingVertex) {
-      vertices.push(i);
-    }
-  }
+  for (let i = 1; i < graph.length; ++i) vertices.push(i);
 
-  if (!vertices.length) {
-    return [[[startingVertex, 0]]];
-  }
+  if (!vertices.length) return [[[0, 0]]];
 
   /** @type {Array<Path>} */
   const result = [];
@@ -73,9 +61,9 @@ export function generateAllHamiltonianPaths({ graph, startingVertex }) {
   for (const perm of generatePermutationsHeapIter({ array: vertices })) {
     /** @type {Path} */
     const path = [
-      [startingVertex, 0],
+      [0, 0],
       ...perm.map((vertex, index) => {
-        const prevVertex = index === 0 ? startingVertex : perm[index - 1];
+        const prevVertex = index === 0 ? 0 : perm[index - 1];
         return [vertex, graph[prevVertex][vertex]];
       })
     ];

@@ -60,23 +60,14 @@ describe("tsp", () => {
     describe("generateAllHamiltonianPaths", () => {
       it("should return a single step path with 0 cost if there is only one vertex in the graph", () => {
         const graph = makeCompleteGraph({ numVertices: 1 });
-        const startingVertex = 0;
-        const actual = Tsp.generateAllHamiltonianPaths({
-          graph,
-          startingVertex
-        });
+        const actual = Tsp.generateAllHamiltonianPaths({ graph });
         expect(actual).to.deep.equal([[[0, 0]]]);
       });
 
       it("should return the only hamiltonian path if there are two vertices in the graph", () => {
         const graph = makeCompleteGraph({ numVertices: 2 });
-        let startingVertex = 0;
-        let actual = Tsp.generateAllHamiltonianPaths({ graph, startingVertex });
-        expect(actual).to.deep.equal([[[startingVertex, 0], [1, graph[0][1]]]]);
-
-        startingVertex = 1;
-        actual = Tsp.generateAllHamiltonianPaths({ graph, startingVertex });
-        expect(actual).to.deep.equal([[[startingVertex, 0], [0, graph[1][0]]]]);
+        const actual = Tsp.generateAllHamiltonianPaths({ graph });
+        expect(actual).to.deep.equal([[[0, 0], [1, graph[0][1]]]]);
       });
     });
 
@@ -111,10 +102,10 @@ describe("tsp", () => {
 
         sandbox.stub(Tsp, "generateAllHamiltonianPaths").returns([]);
 
-        Tsp.exhaustiveSearch(graph, 0);
+        Tsp.exhaustiveSearch(graph);
         expect(
           Tsp.generateAllHamiltonianPaths
-        ).to.have.been.calledOnceWithExactly({ graph, startingVertex: 0 });
+        ).to.have.been.calledOnceWithExactly({ graph });
       });
 
       it("should call chooseShortestPath with the result of generateAllHamiltonianPaths", () => {
@@ -130,7 +121,7 @@ describe("tsp", () => {
         sandbox.stub(Tsp, "chooseShortestPath");
 
         const graph = [[Math.random()]];
-        Tsp.exhaustiveSearch(graph, Math.random());
+        Tsp.exhaustiveSearch(graph);
 
         expect(Tsp.chooseShortestPath).to.have.been.calledOnceWithExactly(
           expected
@@ -149,10 +140,7 @@ describe("tsp", () => {
         sandbox.stub(Tsp, "generateAllHamiltonianPaths");
         sandbox.stub(Tsp, "chooseShortestPath").returns(expected);
 
-        const actual = Tsp.exhaustiveSearch(
-          graph,
-          _.random(0, NUM_VERTICES - 1)
-        );
+        const actual = Tsp.exhaustiveSearch(graph);
         expect(actual).to.equal(expected);
       });
     });
@@ -162,72 +150,70 @@ describe("tsp", () => {
         const edgeWeight = Math.random();
         for (let numVertices = 1; numVertices < NUM_VERTICES; ++numVertices) {
           const graph = makeCompleteGraph({ numVertices, edgeWeight });
+          const expected = Tsp.exhaustiveSearch(graph);
+          const actual = Tsp.nearestNeighbor(graph);
+          expect(actual).to.deep.equal(expected);
+        }
+      });
+    });
+  });
+
+  xdescribe("performance comparison", () => {
+    it("---", () => {
+      const NUM_VERTICES = 9;
+      const metricsByNumVertices = [];
+      const NUM_TRIALS = 1;
+      for (let numVertices = 1; numVertices <= NUM_VERTICES; ++numVertices) {
+        console.log({ numVertices });
+        for (let trialIndex = 0; trialIndex < NUM_TRIALS; ++trialIndex) {
+          console.group();
+          console.log({ trialIndex });
+          metricsByNumVertices[numVertices] = {
+            exhaustiveSearchTimes: [],
+            nearestNeighborTimes: [],
+            correctnessRatios: [],
+            timeRatios: []
+          };
+          const graph = makeCompleteGraph({ numVertices });
           for (let i = 0; i < numVertices; ++i) {
-            const startingVertex = i;
-            const expected = Tsp.exhaustiveSearch(graph, startingVertex);
-            const actual = Tsp.nearestNeighbor(graph, startingVertex);
-            expect(actual).to.deep.equal(expected);
+            const timeBeforeNearestNeighborSearch = process.hrtime.bigint();
+            const nearestNeighborPath = Tsp.nearestNeighbor(graph, i);
+            const timeAfterNearestNeighborSearch = process.hrtime.bigint();
+            const nearestNeighborDuration =
+              timeAfterNearestNeighborSearch - timeBeforeNearestNeighborSearch;
+
+            const timeBeforeExhaustiveSearch = process.hrtime.bigint();
+            const exhaustiveSearchPath = Tsp.exhaustiveSearch(graph, i);
+            const timeAfterExhaustiveSearch = process.hrtime.bigint();
+            const exhaustiveSearchDuration =
+              timeAfterExhaustiveSearch - timeBeforeExhaustiveSearch;
+
+            const correctnessRatio = Tsp.getPathRatio(
+              nearestNeighborPath,
+              exhaustiveSearchPath
+            );
+            metricsByNumVertices[numVertices].nearestNeighborTimes.push(
+              nearestNeighborDuration
+            );
+            metricsByNumVertices[numVertices].exhaustiveSearchTimes.push(
+              exhaustiveSearchDuration
+            );
+
+            metricsByNumVertices[numVertices].timeRatios.push(
+              exhaustiveSearchDuration / nearestNeighborDuration
+            );
+            metricsByNumVertices[numVertices].correctnessRatios.push(
+              correctnessRatio
+            );
           }
+          console.groupEnd();
         }
-      });
-
-      xit("comparison with exhaustiveSearch", () => {
-        const NUM_VERTICES = 9;
-        const metricsByNumVertices = [];
-        const NUM_TRIALS = 1;
-        for (let numVertices = 1; numVertices <= NUM_VERTICES; ++numVertices) {
-          console.log({ numVertices });
-          for (let trialIndex = 0; trialIndex < NUM_TRIALS; ++trialIndex) {
-            console.group();
-            console.log({ trialIndex });
-            metricsByNumVertices[numVertices] = {
-              exhaustiveSearchTimes: [],
-              nearestNeighborTimes: [],
-              correctnessRatios: [],
-              timeRatios: []
-            };
-            const graph = makeCompleteGraph({ numVertices });
-            for (let i = 0; i < numVertices; ++i) {
-              const timeBeforeNearestNeighborSearch = process.hrtime.bigint();
-              const nearestNeighborPath = Tsp.nearestNeighbor(graph, i);
-              const timeAfterNearestNeighborSearch = process.hrtime.bigint();
-              const nearestNeighborDuration =
-                timeAfterNearestNeighborSearch -
-                timeBeforeNearestNeighborSearch;
-
-              const timeBeforeExhaustiveSearch = process.hrtime.bigint();
-              const exhaustiveSearchPath = Tsp.exhaustiveSearch(graph, i);
-              const timeAfterExhaustiveSearch = process.hrtime.bigint();
-              const exhaustiveSearchDuration =
-                timeAfterExhaustiveSearch - timeBeforeExhaustiveSearch;
-
-              const correctnessRatio = Tsp.getPathRatio(
-                nearestNeighborPath,
-                exhaustiveSearchPath
-              );
-              metricsByNumVertices[numVertices].nearestNeighborTimes.push(
-                nearestNeighborDuration
-              );
-              metricsByNumVertices[numVertices].exhaustiveSearchTimes.push(
-                exhaustiveSearchDuration
-              );
-
-              metricsByNumVertices[numVertices].timeRatios.push(
-                exhaustiveSearchDuration / nearestNeighborDuration
-              );
-              metricsByNumVertices[numVertices].correctnessRatios.push(
-                correctnessRatio
-              );
-            }
-            console.groupEnd();
-          }
-        }
-        for (let numVertices = 1; numVertices <= NUM_VERTICES; ++numVertices) {
-          const metrics = metricsByNumVertices[numVertices];
-          metricsByNumVertices[numVertices] = _.mapValues(metrics, mean);
-        }
-        console.dir({ metricsByNumVertices });
-      });
+      }
+      for (let numVertices = 1; numVertices <= NUM_VERTICES; ++numVertices) {
+        const metrics = metricsByNumVertices[numVertices];
+        metricsByNumVertices[numVertices] = _.mapValues(metrics, mean);
+      }
+      console.dir({ metricsByNumVertices });
     });
   });
 });
