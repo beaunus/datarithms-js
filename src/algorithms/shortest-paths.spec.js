@@ -16,6 +16,39 @@ describe("shortest-paths", () => {
   before(sandbox.restore);
   afterEach(sandbox.restore);
 
+  describe.only("dijkstrasAlgorithm", () => {
+    it("should return the same result as bruteForce", () => {
+      for (let n = 2; n < MAX_NUM_VERTICES; ++n) {
+        const graph = SP.generateRandomGraph({
+          numVertices: n,
+          density: 1
+        });
+        // eslint-disable-next-line new-cap
+        let timeBruteForce = BigInt(0);
+        // eslint-disable-next-line new-cap
+        let timeDijkstras = BigInt(0);
+        for (let source = 0; source < n; ++source) {
+          for (let target = 0; target < n; ++target) {
+            if (source === target) continue;
+            const timeBeforeDijkstras = process.hrtime.bigint();
+            const actual = SP.dijkstrasAlgorithm({ graph, source, target });
+            timeDijkstras += process.hrtime.bigint() - timeBeforeDijkstras;
+            const timeBeforeBruteForce = process.hrtime.bigint();
+            const expected = SP.bruteForce({ graph, source, target });
+            timeBruteForce += process.hrtime.bigint() - timeBeforeBruteForce;
+            expect(actual).to.have.ordered.members(expected);
+          }
+        }
+        console.log({
+          n,
+          timeBruteForce,
+          timeDijkstras,
+          ratio: timeBruteForce / timeDijkstras
+        });
+      }
+    });
+  });
+
   describe("bruteForce", () => {
     const graph = SP.generateRandomGraph({
       numVertices: _.random(MAX_NUM_VERTICES),

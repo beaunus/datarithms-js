@@ -8,9 +8,83 @@
  * @param {number} param.target
  * @return {Path}
  */
+export function dijkstrasAlgorithm({ graph, source, target }) {
+  const Q = new Set();
+  for (let i = 0; i < graph.length; ++i) {
+    Q.add(i);
+  }
+
+  const prev = new Array(graph.length);
+  const distances = new Array(graph.length).fill(Number.MAX_VALUE);
+  distances[source] = 0;
+
+  while (Q.size) {
+    const u = computeVertexWithMinDistance({ availableVertices: Q, distances });
+
+    if (u === target) return computePath({ source, target, prev });
+
+    Q.delete(u);
+    for (let v = 0; v < graph.length; ++v) {
+      if (v === undefined || !Q.has(v)) continue;
+      const alt = distances[u] + graph[u][v];
+      if (alt < distances[v]) {
+        distances[v] = alt;
+        prev[v] = u;
+      }
+    }
+  }
+}
+
+/**
+ * @param {object} param
+ * @param {ReadonlyArray<number>} param.prev
+ * @param {number} param.source
+ * @param {number} param.target
+ * @return {Array<number>}
+ */
+function computePath({ source, target, prev }) {
+  const result = [];
+  let u = target;
+  if (prev[u] !== undefined || u === source) {
+    while (u !== undefined) {
+      result.unshift(u);
+      u = prev[u];
+    }
+  }
+  result.shift();
+  return result;
+}
+
+/**
+ * @param {object} param
+ * @param {Set<number>} param.availableVertices
+ * @param {ReadonlyArray<number>} param.distances
+ * @return {number}
+ */
+function computeVertexWithMinDistance({ availableVertices, distances }) {
+  let championIndex = -1;
+  let championCost = Number.MAX_VALUE;
+  for (const vertex of availableVertices) {
+    if (distances[vertex] < championCost) {
+      championIndex = vertex;
+      championCost = distances[vertex];
+    }
+  }
+  return championIndex;
+}
+
+/**
+ * @param {object} param
+ * @param {Graph} param.graph
+ * @param {number} param.source
+ * @param {number} param.target
+ * @return {Path}
+ */
 export function bruteForce({ graph, source, target }) {
   const allPaths = exports.findAllPaths({ graph, source, target });
-  const allPathCosts = allPaths.map(exports.computeCostOfPath);
+  const allPathCosts = allPaths.map(path =>
+    exports.computeCostOfPath({ graph, path, source })
+  );
   const indexOfShortestPath = exports.findIndexOfSmallestElement(allPathCosts);
   return allPaths[indexOfShortestPath];
 }
