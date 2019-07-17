@@ -18,7 +18,7 @@ const FUNCTIONS_TO_TEST = [
 
 describe("permutations", () => {
   for (const fn of FUNCTIONS_TO_TEST) {
-    describe("generatePermutationsHeap", () => {
+    describe(fn.name, () => {
       it("should generate the correct results if the array has 1 element", () => {
         const array = [1];
         const actual = [...fn({ array })];
