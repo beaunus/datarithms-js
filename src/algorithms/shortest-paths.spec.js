@@ -7,6 +7,7 @@ import * as sinon from "sinon";
 
 import { xrange } from "./itertools";
 import * as SP from "./shortest-paths";
+import { numPermutations } from "../utils";
 
 const MAX_NUM_VERTICES = 5;
 
@@ -222,24 +223,3 @@ describe("shortest-paths", () => {
     });
   });
 });
-
-/**
- * @param {number} n
- * @return {number}
- */
-function factorial(n) {
-  let result = 1;
-  for (let i = n; i >= 2; --i) result *= i;
-  return result;
-}
-
-/**
- * @param {number} numElements
- * @return {number}
- */
-function numPermutations(numElements) {
-  let result = 0;
-  for (let k = 0; k <= numElements; ++k)
-    result += factorial(numElements) / factorial(k);
-  return result;
-}
