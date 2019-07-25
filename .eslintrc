@@ -12,6 +12,7 @@
   "rules": {
     "no-shadow": "warn",
     "comma-dangle": ["error", "always-multiline"],
-    "sort-imports": "error"
+    "sort-imports": "error",
+    "sort-keys": "error"
   }
 }
