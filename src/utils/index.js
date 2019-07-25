@@ -25,5 +25,7 @@ export function numPermutations(numElements) {
  * @return {number}
  */
 export function nChooseK(n, k) {
-  return factorial(n) / (factorial(k) * factorial(n - k));
+  if (k === 0 || n === k) return 1;
+  if (k > n) return 0;
+  return nChooseK(n - 1, k - 1) + nChooseK(n - 1, k);
 }
