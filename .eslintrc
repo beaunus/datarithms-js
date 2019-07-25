@@ -10,6 +10,8 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-shadow": "warn"
+    "no-shadow": "warn",
+    "comma-dangle": ["error", "always-multiline"],
+    "sort-imports": "error"
   }
 }
