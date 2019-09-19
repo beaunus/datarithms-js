@@ -4,7 +4,7 @@ import {
 } from "./eight-queens";
 import { expect } from "chai";
 
-describe.only("eight-queens", () => {
+describe("eight-queens", () => {
   const solutions = [
     1,
     1,
