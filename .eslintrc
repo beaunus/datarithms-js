@@ -13,6 +13,6 @@
     "no-shadow": "warn",
     "comma-dangle": ["error", "always-multiline"],
     "sort-imports": "error",
-    "sort-keys": "error"
+    "sort-keys": ["error", "asc", { "natural": true }]
   }
 }
