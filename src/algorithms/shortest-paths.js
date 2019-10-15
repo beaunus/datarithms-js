@@ -21,11 +21,11 @@ export function dijkstrasAlgorithm({ graph, source, target }) {
   while (Q.size) {
     const u = computeVertexWithMinDistance({ availableVertices: Q, distances });
 
-    if (u === target) return computePath({ source, target, prev });
+    if (u === target) return computePath({ prev, source, target });
 
     Q.delete(u);
     for (let v = 0; v < graph.length; ++v) {
-      if (v === undefined || !Q.has(v)) continue;
+      if (!Q.has(v)) continue;
       const alt = distances[u] + graph[u][v];
       if (alt < distances[v]) {
         distances[v] = alt;

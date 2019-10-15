@@ -1,13 +1,13 @@
-import * as chai from "chai";
+import * as SP from "./shortest-paths";
+import _ from "lodash";
+import chai from "chai";
+import { numPermutations } from "../utils";
+import sinon from "sinon";
 import sinonChai from "sinon-chai";
 chai.use(sinonChai);
 const { expect } = chai;
-import * as _ from "lodash";
-import * as sinon from "sinon";
 
 import { xrange } from "./itertools";
-import * as SP from "./shortest-paths";
-import { numPermutations } from "../utils";
 
 const MAX_NUM_VERTICES = 5;
 
@@ -20,40 +20,24 @@ describe("shortest-paths", () => {
   describe("dijkstrasAlgorithm", () => {
     it("should return the same result as bruteForce", () => {
       for (let n = 2; n < MAX_NUM_VERTICES; ++n) {
-        const graph = SP.generateRandomGraph({
-          numVertices: n,
-          density: 1
-        });
-        // eslint-disable-next-line new-cap
-        let timeBruteForce = BigInt(0);
-        // eslint-disable-next-line new-cap
-        let timeDijkstras = BigInt(0);
+        const graph = SP.generateRandomGraph({ density: 1, numVertices: n });
+
         for (let source = 0; source < n; ++source) {
           for (let target = 0; target < n; ++target) {
             if (source === target) continue;
-            const timeBeforeDijkstras = process.hrtime.bigint();
             const actual = SP.dijkstrasAlgorithm({ graph, source, target });
-            timeDijkstras += process.hrtime.bigint() - timeBeforeDijkstras;
-            const timeBeforeBruteForce = process.hrtime.bigint();
             const expected = SP.bruteForce({ graph, source, target });
-            timeBruteForce += process.hrtime.bigint() - timeBeforeBruteForce;
             expect(actual).to.have.ordered.members(expected);
           }
         }
-        console.log({
-          n,
-          timeBruteForce,
-          timeDijkstras,
-          ratio: timeBruteForce / timeDijkstras
-        });
       }
     });
   });
 
   describe("bruteForce", () => {
     const graph = SP.generateRandomGraph({
+      density: Math.random(),
       numVertices: _.random(MAX_NUM_VERTICES),
-      density: Math.random()
     });
     const fakeAllPaths = _.times(MAX_NUM_VERTICES, () =>
       _.times(_.random(1, MAX_NUM_VERTICES), () => Math.random())
@@ -77,11 +61,8 @@ describe("shortest-paths", () => {
           expect(SP.findAllPaths).to.have.been.calledOnceWithExactly({
             graph,
             source,
-            target
+            target,
           });
-          // expect(fakeAllPaths.map).to.have.been.calledOnceWithExactly(path =>
-          //   SP.computeCostOfPath({ graph, path, source })
-          // );
           expect(
             SP.findIndexOfSmallestElement
           ).to.have.been.calledOnceWithExactly(fakePathCosts);
@@ -94,7 +75,7 @@ describe("shortest-paths", () => {
   describe("computePathCost", () => {
     it("should return the result of adding all the path costs", () => {
       const numVertices = MAX_NUM_VERTICES;
-      const graph = SP.generateRandomGraph({ numVertices, density: 1 });
+      const graph = SP.generateRandomGraph({ density: 1, numVertices });
       const path = _.shuffle(_.range(1, MAX_NUM_VERTICES));
       let expected = 0;
       let previous = 0;
@@ -147,7 +128,7 @@ describe("shortest-paths", () => {
        */
       function expectAllPaths(expectation) {
         for (let n = 2; n <= MAX_NUM_VERTICES; ++n) {
-          const graph = SP.generateRandomGraph({ numVertices: n, density: 1 });
+          const graph = SP.generateRandomGraph({ density: 1, numVertices: n });
           for (let source = 0; source < n; ++source) {
             for (let target = 0; target < n; ++target) {
               if (source === target) continue;
@@ -189,7 +170,7 @@ describe("shortest-paths", () => {
   describe("generateRandomGraph", () => {
     it("should generate a complete graph when the given density is 1", () => {
       for (const numVertices of xrange(1, MAX_NUM_VERTICES)) {
-        const actual = SP.generateRandomGraph({ numVertices, density: 1 });
+        const actual = SP.generateRandomGraph({ density: 1, numVertices });
         expect(actual)
           .to.be.an("array")
           .of.length(numVertices);
@@ -209,7 +190,7 @@ describe("shortest-paths", () => {
 
     it("should generate a sparse graph when the given density is 0", () => {
       for (const numVertices of xrange(1, MAX_NUM_VERTICES)) {
-        const actual = SP.generateRandomGraph({ numVertices, density: 0 });
+        const actual = SP.generateRandomGraph({ density: 0, numVertices });
         expect(actual)
           .to.be.an("array")
           .of.length(numVertices);
