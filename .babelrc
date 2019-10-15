@@ -1,3 +1,4 @@
 {
+  "plugins": ["@babel/plugin-syntax-bigint"],
   "presets": ["@babel/preset-env"]
 }
